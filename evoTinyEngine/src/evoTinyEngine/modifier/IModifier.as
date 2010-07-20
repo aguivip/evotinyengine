@@ -22,6 +22,8 @@ package evoTinyEngine.modifier
 		function set startTime(v:Number):void;
 		function get endTime():Number;
 		function set endTime(v:Number):void;
+		function get tickTime():Number;
+		function set tickTime(v:Number):void;
 		function get id():String;
 		function get type():String;
 		function get initialized():Boolean;

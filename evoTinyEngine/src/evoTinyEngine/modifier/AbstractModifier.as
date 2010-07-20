@@ -34,6 +34,7 @@ package evoTinyEngine.modifier
 		private var _durationTime:Number;
 		private var _startTime:Number;
 		private var _endTime:Number;
+		private var _tickTime:Number;
 		
 		public function AbstractModifier(assets:AbstractAssets, id:String = "")
 		{
@@ -103,6 +104,15 @@ package evoTinyEngine.modifier
 		public function set endTime(v:Number):void
 		{
 			_endTime = v;
+		}
+		
+		public function get tickTime():Number
+		{
+			return _tickTime;
+		}
+		public function set tickTime(v:Number):void
+		{
+			_tickTime = v;
 		}
 		
 		
