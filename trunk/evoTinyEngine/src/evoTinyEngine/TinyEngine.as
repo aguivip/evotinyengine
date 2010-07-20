@@ -12,10 +12,12 @@
 	import evoTinyEngine.sound.sync.SoundSynchroniser;
 	
 	import flash.events.Event;
+	import flash.events.TimerEvent;
 	import flash.geom.Rectangle;
 	import flash.media.Sound;
 	import flash.media.SoundChannel;
 	import flash.media.SoundTransform;
+	import flash.utils.Timer;
 	import flash.utils.getTimer;
 
 	/**
@@ -50,6 +52,8 @@
 		
 		private var initializeList:Array;
 		private var disposeList:Array;
+		
+		private var pendingTimer:Timer;
 		
 		public function TinyEngine(assets:AbstractAssets, bpm:Number = 100, offset:int = 0, pixelSnapping:String = "auto", smoothing:Boolean = false)
 		{
@@ -95,6 +99,7 @@
 			modifier.duration = end16thNote - start16thNote;
 			modifier.endTime = end16thNote * tickTime
 			modifier.durationTime = modifier.duration * tickTime;
+			modifier.tickTime = tickTime;
 			
 			inOrder = false;
 			
@@ -103,23 +108,48 @@
 		
 		public function play(start16thNote:int = 0, loops:int = 0):void
 		{
-			if(start16thNote < renderData.tickCount) inOrder = false;
-			
-			if(!inOrder) order();
-			
-			this.seek = int(start16thNote * tickTime) || 1;
-			if(sound) 
+			if(!soundSynchroniser.loading)
 			{
-				if(channel) channel.stop();
-				channel = assets.channel = sound.play(this.seek, loops);
+				if(start16thNote < renderData.tickCount) inOrder = false;
+				
+				if(!inOrder) order();
+				
+				this.seek = int(start16thNote * tickTime) || 1;
+				if(sound) 
+				{
+					if(channel) channel.stop();
+					channel = assets.channel = sound.play(this.seek, loops);
+				}
+				else
+				{
+					starttime = getTimer();
+				}
+				
+				this.addEventListener(Event.ENTER_FRAME, render);
 			}
 			else
 			{
-				starttime = getTimer();
+				pendingPlay(start16thNote, loops);
 			}
-			
-			this.addEventListener(Event.ENTER_FRAME, render);
 		}
+		
+		private var _pendingStart16thNote:int;
+		private var _pendingLoops:int;
+		private function pendingPlay(start16thNote:int = 0, loops:int = 0):void
+		{
+			this._pendingStart16thNote = start16thNote;
+			this._pendingLoops = loops;
+			pendingTimer = new Timer(100, 1);
+			pendingTimer.addEventListener(TimerEvent.TIMER_COMPLETE, retryPlay);
+			pendingTimer.start();
+		}
+		private function retryPlay(event:TimerEvent):void
+		{
+			pendingTimer.removeEventListener(TimerEvent.TIMER_COMPLETE, retryPlay);
+			pendingTimer = null;
+			play(_pendingStart16thNote, _pendingLoops);
+		}
+		
 		
 		private var paused:Boolean = true;
 		public function pause():void

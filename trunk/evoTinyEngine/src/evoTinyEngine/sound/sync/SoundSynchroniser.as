@@ -3,15 +3,23 @@ package evoTinyEngine.sound.sync
 	import evoTinyEngine.event.SoundHitEvent;
 	import evoTinyEngine.modifier.ModifierType;
 	
+	import flash.display.Loader;
+	import flash.events.Event;
+	import flash.events.IOErrorEvent;
+	import flash.net.URLLoader;
+	import flash.net.URLRequest;
 	import flash.utils.Dictionary;
 
 	public class SoundSynchroniser
 	{
 		public var hasSync:Boolean = false;
+		public var loading:Boolean = false;
 		
 		private var list:Vector.<SoundHitEvent> = new Vector.<SoundHitEvent>(1000000);
 		private var typeDictionary:Dictionary = new Dictionary();
 		private var event:SoundHitEvent = new SoundHitEvent(-1);
+		
+		private var loader:URLLoader;
 		
 		public function SoundSynchroniser()
 		{
@@ -20,6 +28,36 @@ package evoTinyEngine.sound.sync
 			typeDictionary[ModifierType.POSTPROCESS] = 0;
 		}
 		
+		/**
+		 * add syncdata from file url
+		 **/
+		public function addFileFromUrl(url:String):void
+		{
+			loading = true;
+			loader = new URLLoader();
+			loader.addEventListener(Event.COMPLETE, complete);
+			loader.addEventListener(IOErrorEvent.IO_ERROR, error);
+			loader.load(new URLRequest(url));
+		}
+		private function complete(event:Event):void
+		{
+			this.addHitPairPosValue(String(loader.data).split(","));
+			loading = false;
+		}
+		private function error(event:IOErrorEvent):void
+		{
+			trace("ERROR :: "+event);
+		}
+		
+		/**
+		 * add embedded string
+		 **/
+		public function addString(data:String):void
+		{
+			this.addHitPairPosValue(data.split(","));
+		}
+		
+			
 		/**
 		 * add single hit
 		 **/
