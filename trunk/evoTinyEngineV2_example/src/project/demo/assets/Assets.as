@@ -7,6 +7,7 @@ package project.demo.assets
 	import flash.display.SpreadMethod;
 	import flash.display.Sprite;
 	import flash.display.Stage;
+	import flash.events.TimerEvent;
 	import flash.geom.Matrix;
 	
 	public class Assets extends AbstractAssets
@@ -15,6 +16,21 @@ package project.demo.assets
 		public function Assets(width:int, height:int)
 		{
 			super(width, height);
+		}
+		
+		/**
+		 * Executed on engine.play();
+		 **/
+		override public function initialize():Boolean
+		{
+			
+			
+			/** 
+			 * If true the demo will continue the initialization.
+			 * If false the demo expects this.dispatchEvent(new Event(AbstractAssets.EVENT_ASSETS_INITIALIZED));
+			 * Use this to organize heavy precalculations that could kill the player.
+			 **/
+			return true;
 		}
 		
 		// SYNC DATA
