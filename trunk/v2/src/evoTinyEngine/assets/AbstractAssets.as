@@ -30,7 +30,7 @@ package evoTinyEngine.assets
 		
 		public function initialize():Boolean
 		{
-			throw('--#AbstractAssets[initialize]:: this method[initialize] must be overridden in implementation.');
+			return true;
 		}
 		
 		public var tinyengine:ITinyEngine;
