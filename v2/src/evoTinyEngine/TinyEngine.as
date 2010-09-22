@@ -32,6 +32,7 @@
 		private var tickTime		:Number = 0;
 		private var renderer		:AbstractRender;
 		private var start16thNote	:int = 0;
+		private var loops			:int;
 		private var modifierList	:Vector.<int>;
 		
 		public function TinyEngine(assets:AbstractAssets, renderer:AbstractRender, bpm:Number = 100)
@@ -87,27 +88,43 @@
 			return modifier;
 		}
 		
+		private function waitAndPlay(event:Event):void
+		{
+			assets.removeEventListener(AbstractAssets.EVENT_ASSETS_INITIALIZED, waitAndPlay);
+			assets.initialized = true;
+			play(this.start16thNote, this.loops);
+		}
+		
 		public function play(start16thNote:int = 0, loops:int = 0):void
 		{
 			this.start16thNote = start16thNote;
+			this.loops = loops;
 			
-			if(!inOrder) order();
-			
-			this.renderer.seek = int(start16thNote * tickTime) || 1;
-			
-			if(sound) 
+			if(!assets.initialized)
 			{
-				if(renderer.channel) renderer.channel.stop();
-				renderer.channel = assets.channel = sound.play(this.renderer.seek, loops);
+				assets.addEventListener(AbstractAssets.EVENT_ASSETS_INITIALIZED, waitAndPlay);
+				assets.initializeAssets();
 			}
 			else
 			{
-				this.renderer.starttime = getTimer();
+				if(!inOrder) order();
+				
+				this.renderer.seek = int(start16thNote * tickTime) || 1;
+				
+				if(sound) 
+				{
+					if(renderer.channel) renderer.channel.stop();
+					renderer.channel = assets.channel = sound.play(this.renderer.seek, loops);
+				}
+				else
+				{
+					this.renderer.starttime = getTimer();
+				}
+				
+				this.renderer.init(sound ? true : false, tickTime);
+				
+				this.addEventListener(Event.ENTER_FRAME, render);
 			}
-			
-			this.renderer.init(sound ? true : false, tickTime);
-			
-			this.addEventListener(Event.ENTER_FRAME, render);
 		}
 		
 		private var paused:Boolean = true;
