@@ -106,7 +106,7 @@ package evoTinyEngine.render
 					if(mod.type != ModifierType.SETUP) 
 					{
 						_playList.push(mod);
-						mod.position = ++c;
+						mod.position = c++;
 					}
 					mod.active = true;
 					mod.initialize(this._renderData);
