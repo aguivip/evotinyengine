@@ -6,6 +6,7 @@ package evoTinyEngine.render
 	import evoTinyEngine.event.SoundHitEvent;
 	import evoTinyEngine.modifier.AbstractModifier;
 	import evoTinyEngine.modifier.IModifier;
+	import evoTinyEngine.modifier.ModifierType;
 	
 	import flash.display.BitmapData;
 	import flash.events.Event;
@@ -96,14 +97,17 @@ package evoTinyEngine.render
 			// RENDER
 			var sndHit:SoundHitEvent;
 			var mod:IModifier;
-			var i:int, l:int = _sequenceStartCount[tickCount];
+			var i:int, c:int = 0, l:int = _sequenceStartCount[tickCount];
 			for(i = 0; i < l; i++)
 			{
 				mod = _sequenceStart[tickCount][i];
 				if(!mod.active)
 				{
-					_playList.push(mod);
-					mod.position = i;
+					if(mod.type != ModifierType.SETUP) 
+					{
+						_playList.push(mod);
+						mod.position = ++c;
+					}
 					mod.active = true;
 					mod.initialize(this._renderData);
 				}
@@ -115,7 +119,7 @@ package evoTinyEngine.render
 				if(mod.active)
 				{
 					mod.dispose();
-					_playList.splice(mod.position, 1);
+					if(mod.type != ModifierType.SETUP) _playList.splice(mod.position, 1);
 					mod.active = false;
 				}
 			}
