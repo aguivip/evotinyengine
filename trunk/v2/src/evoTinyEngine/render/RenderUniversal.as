@@ -6,6 +6,7 @@ package evoTinyEngine.render
 	import evoTinyEngine.event.SoundHitEvent;
 	import evoTinyEngine.modifier.AbstractModifier;
 	import evoTinyEngine.modifier.IModifier;
+	import evoTinyEngine.modifier.ModifierType;
 	
 	import flash.display.BitmapData;
 	import flash.events.Event;
@@ -97,7 +98,7 @@ package evoTinyEngine.render
 				mod = _sequenceStart[tickCount][i];
 				if(!mod.active)
 				{
-					_playList.push(mod);
+					if(mod.type != ModifierType.SETUP) _playList.push(mod);
 					mod.position = i;
 					mod.active = true;
 					mod.initialize(this._renderData);
