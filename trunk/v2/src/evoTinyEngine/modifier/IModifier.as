@@ -28,6 +28,8 @@ package evoTinyEngine.modifier
 		function set tickTime(v:Number):void;
 		function get id():String;
 		function get type():int;
+		function get layer():int;
+		function set layer(v:int):void;
 		function get initialized():Boolean;
 		function set position(v:int):void;
 		function get position():int;
