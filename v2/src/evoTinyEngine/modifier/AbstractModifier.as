@@ -36,9 +36,10 @@ package evoTinyEngine.modifier
 		private var _endTime:Number;
 		private var _tickTime:Number
 		
-		public function AbstractModifier(id:String = "")
+		public function AbstractModifier(id:String = "", layer:int = 0)
 		{
 			this.id = id;
+			this.layer = layer;
 		}
 		
 		public function setup(assets:AbstractAssets, bit:BitmapData = null):void
@@ -138,6 +139,17 @@ package evoTinyEngine.modifier
 		public function set type(v:int):void
 		{
 			_type = v;
+		}
+		
+		private var _layer:int = 0x0;
+		public function get layer():int
+		{
+			return _layer;
+		}
+		
+		public function set layer(v:int):void
+		{
+			_layer = v;
 		}
 		
 		private var _initialized:Boolean = false;

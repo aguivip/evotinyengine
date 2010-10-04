@@ -223,13 +223,24 @@
 			}
 			else if(a.type == b.type)
 			{
-				if(a.end16thNote < b.end16thNote)
+				if(a.layer < b.layer)
 				{
 					return -1;
 				}
-				else
+				else if(a.layer > b.layer)
 				{
 					return 1;
+				}
+				else
+				{
+					if(a.end16thNote < b.end16thNote)
+					{
+						return -1;
+					}
+					else
+					{
+						return 1;
+					}
 				}
 			}
 			else
