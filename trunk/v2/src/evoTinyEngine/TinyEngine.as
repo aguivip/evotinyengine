@@ -121,7 +121,7 @@
 					this.renderer.starttime = getTimer();
 				}
 				
-				this.renderer.init(sound ? true : false, tickTime);
+				this.renderer.init(sound ? true : false, tickTime, this.renderer.seek);
 				
 				this.addEventListener(Event.ENTER_FRAME, render);
 			}

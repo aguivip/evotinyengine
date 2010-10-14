@@ -49,10 +49,11 @@ package evoTinyEngine.render
 		}
 		
 		
-		override public function init(timeFromSound:Boolean, tickTime:Number):void
+		override public function init(timeFromSound:Boolean, tickTime:Number, startTime:int):void
 		{
 			this._timeFromSound = timeFromSound;
 			this._tickTime = tickTime;
+			this._lasttime = startTime;
 		}
 		
 		
@@ -85,7 +86,7 @@ package evoTinyEngine.render
 			{
 				this._renderData.time = int(seek + _time - starttime + _framesplit);
 			}
-			this._renderData.deltatime = this._renderData.time - _lasttime;
+			this._renderData.deltatime = (this._renderData.deltatime = this._renderData.time - _lasttime) < 100 ? this._renderData.deltatime : 50;
 			this.tickCount = this._renderData.tickCount = int(this._renderData.time / _tickTime);
 			this._lasttime = this._renderData.time;
 			
