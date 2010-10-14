@@ -19,7 +19,7 @@ package evoTinyEngine.render
 		public var soundSynchroniser	:SoundSynchroniser;
 		public var bitmapData			:BitmapData;
 		
-		public function init(timeFromSound:Boolean, tickTime:Number):void{throw('--#AbstractRender[render]:: must be overridden.');}
+		public function init(timeFromSound:Boolean, tickTime:Number, startTime:int):void{throw('--#AbstractRender[render]:: must be overridden.');}
 		
 		public function render(event:Event):void{throw('--#AbstractRender[render]:: must be overridden.');}
 		
