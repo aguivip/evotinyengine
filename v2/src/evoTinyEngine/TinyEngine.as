@@ -115,6 +115,7 @@
 				{
 					if(renderer.channel) renderer.channel.stop();
 					renderer.channel = assets.channel = sound.play(this.renderer.seek, loops);
+					this.volume = _volume;
 				}
 				else
 				{
