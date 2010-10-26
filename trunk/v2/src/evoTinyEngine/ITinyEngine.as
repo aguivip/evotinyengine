@@ -8,6 +8,7 @@ package evoTinyEngine
 	public interface ITinyEngine
 	{
 		function addModifier(modifier:IModifier, start16thNote:int, end16thNote:int):IModifier;
+		function precalculate():void;
 		function play(start16thNote:int = 0, loops:int = 0):void;
 		function pause():void;
 		function get tick():int;
