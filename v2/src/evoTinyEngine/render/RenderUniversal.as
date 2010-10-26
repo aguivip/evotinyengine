@@ -63,7 +63,6 @@ package evoTinyEngine.render
 			
 			// CORRECT FRAME
 			_secondTime = _time - _prevSecondTime;
-			
 			if(_secondTime >= 1000) 
 			{
 				_frameRate = _frames;
@@ -73,22 +72,22 @@ package evoTinyEngine.render
 				_frames++;
 			}
 			_prevFrameTime = _time;		
-			
 			_framesplit = _frameRate >> 1;
 			
 			
 			// RENDER DATA
+			this._renderData.time = int(seek + _time - starttime + _framesplit);
+			
 			if(_timeFromSound)
 			{
-				this._renderData.time = int(channel.position + _framesplit);
-			}
-			else
-			{
-				this._renderData.time = int(seek + _time - starttime + _framesplit);
+				this._renderData.sequenceTime = int(channel.position + _framesplit);
+			} else {
+				this._renderData.sequenceTime = this._renderData.time;
 			}
 			this._renderData.deltatime = (this._renderData.deltatime = this._renderData.time - _lasttime) < 100 ? this._renderData.deltatime : 50;
-			this.tickCount = this._renderData.tickCount = int(this._renderData.time / _tickTime);
+			this.tickCount = this._renderData.tickCount = int(this._renderData.sequenceTime / _tickTime);
 			this._lasttime = this._renderData.time;
+			
 			
 			// RENDER
 			var sndHit:SoundHitEvent;
