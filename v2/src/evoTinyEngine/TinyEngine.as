@@ -24,7 +24,9 @@
 	 */
 	public class TinyEngine extends Sprite implements ITinyEngine
 	{
-		public static const Infinite:int = 9999;
+		public static const EVENT_PRECALCULATED_AND_READY_TO_RAP:String = "event_ready";
+		
+		public static const Infinite		:int = 9999;
 		
 		private var assets			:AbstractAssets;
 		private var inOrder			:Boolean = false;
@@ -92,7 +94,23 @@
 		{
 			assets.removeEventListener(AbstractAssets.EVENT_ASSETS_INITIALIZED, waitAndPlay);
 			assets.initialized = true;
-			play(this.start16thNote, this.loops);
+			if(!precalc_command)
+			{
+				play(this.start16thNote, this.loops);
+			}
+			else
+			{
+				precalc_command = false;
+				this.dispatchEvent(new Event(EVENT_PRECALCULATED_AND_READY_TO_RAP));
+			}
+		}
+		
+		private var precalc_command:Boolean = false;
+		public function precalculate():void
+		{
+			precalc_command = true;
+			assets.addEventListener(AbstractAssets.EVENT_ASSETS_INITIALIZED, waitAndPlay);
+			assets.initializeAssets();
 		}
 		
 		public function play(start16thNote:int = 0, loops:int = 0):void
