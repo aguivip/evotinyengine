@@ -5,10 +5,10 @@
 	 */
 	final public class RenderData
 	{
-		public var time			:int = 0;
-		public var sequenceTime	:int = 0;
-		public var deltatime	:int = 0;
-		public var tickCount	:int = 0;
-		public var lifeTime		:Number = 0;
+		public var time				:int = 0;
+		public var deltatime		:int = 0;
+		public var sequenceTime		:int = 0;
+		public var tickCount		:int = 0;
+		public var lifeTime			:Number = 0;
 	}
 }
