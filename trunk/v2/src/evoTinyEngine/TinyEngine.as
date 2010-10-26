@@ -128,16 +128,13 @@
 				if(!inOrder) order();
 				
 				this.renderer.seek = int(start16thNote * tickTime) || 1;
+				this.renderer.starttime = getTimer();
 				
 				if(sound) 
 				{
 					if(renderer.channel) renderer.channel.stop();
 					renderer.channel = assets.channel = sound.play(this.renderer.seek, loops);
 					this.volume = _volume;
-				}
-				else
-				{
-					this.renderer.starttime = getTimer();
 				}
 				
 				this.renderer.init(sound ? true : false, tickTime, this.renderer.seek);
