@@ -59,29 +59,11 @@ package evoTinyEngine.render
 		
 		override public function render(event:Event):void
 		{
-			_time = getTimer();
-			
-			// CORRECT FRAME
-			_secondTime = _time - _prevSecondTime;
-			if(_secondTime >= 1000) 
-			{
-				_frameRate = _frames;
-				_frames = 0;
-				_prevSecondTime = _time;
-			} else {
-				_frames++;
-			}
-			_prevFrameTime = _time;		
-			_framesplit = _frameRate >> 1;
-			
-			
 			// RENDER DATA
-			this._renderData.time = int(seek + _time - starttime + _framesplit);
-			this._renderData.sequenceTime = _timeFromSound ? int(channel.position + _framesplit) : this._renderData.time;
+			this._renderData.time = getTimer() - starttime
 			this._renderData.deltatime = (this._renderData.deltatime = this._renderData.time - _lasttime) < 100 ? this._renderData.deltatime : 50;
-			this.tickCount = this._renderData.tickCount = int(this._renderData.sequenceTime / _tickTime);
 			this._lasttime = this._renderData.time;
-			
+			this.tickCount = this._renderData.tickCount = int( ( _timeFromSound ? channel.position : this._renderData.time ) / _tickTime);
 			
 			// RENDER
 			var sndHit:SoundHitEvent;
