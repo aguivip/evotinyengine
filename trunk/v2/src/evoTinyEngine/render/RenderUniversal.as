@@ -60,7 +60,7 @@ package evoTinyEngine.render
 		override public function render(event:Event):void
 		{
 			// RENDER DATA
-			this._renderData.time = getTimer() - starttime
+			this._renderData.time = getTimer() - starttime;
 			this._renderData.deltatime = (this._renderData.deltatime = this._renderData.time - _lasttime) < 100 ? this._renderData.deltatime : 50;
 			this._lasttime = this._renderData.time;
 			this.tickCount = this._renderData.tickCount = int( ( _timeFromSound ? channel.position : this._renderData.time ) / _tickTime);
@@ -80,6 +80,7 @@ package evoTinyEngine.render
 					}
 					mod.active = true;
 					mod.initialize(this._renderData);
+					mod.endTime = _renderData.time + mod.durationTime;	
 				}
 			}
 			l = _sequenceEndCount[tickCount];
