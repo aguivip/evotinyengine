@@ -41,13 +41,13 @@
 		{
 			assets.tinyengine = this;
 			this.assets = assets;
-			this.sound = assets.sound;
+			//this.sound = assets.sound;
 			
 			this.tickTime = assets.tickTime = 60000 / (bpm * 4);
 			
 			this.renderer = renderer;
 			this.render = renderer.render;
-			this.renderer.channel = assets.channel;
+			//this.renderer.channel = assets.channel;
 			
 			this.soundSynchroniser = new SoundSynchroniser();
 			
@@ -125,6 +125,9 @@
 			}
 			else
 			{
+				this.sound = this.assets.sound;
+				this.renderer.channel = this.assets.channel;
+				
 				if(!inOrder) order();
 				
 				this.renderer.seek = int(start16thNote * tickTime) || 1;
@@ -146,6 +149,7 @@
 		private var paused:Boolean = true;
 		public function pause():void
 		{
+			if(renderer.channel) renderer.channel.stop();
 			this.removeEventListener(Event.ENTER_FRAME, render);
 		}
 		
